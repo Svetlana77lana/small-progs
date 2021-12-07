@@ -1,0 +1,51 @@
+stages:
+  - test
+  - build
+
+
+
+# ==============================================================================
+# stage: test
+# ==============================================================================
+test_develop:
+  stage: test
+  script:
+    - pytest -rA
+  only:
+    - develop
+
+
+
+linter_check:
+  stage: test
+  script:
+    - flake8
+  only:
+    - develop
+
+
+
+formatter_check:
+  stage: test
+  script:
+    - yapf -dr .
+  only:
+    - develop
+
+
+
+# ==============================================================================
+# stage: build
+# ==============================================================================
+build_develop:
+  stage: build
+  script:
+    - cmd.exe /c build_setup.bat
+  only:
+    - develop
+  except:
+    - schedules
+  artifacts:
+    paths:
+    - ./Build/*.exe
+    expire_in: 3 weeks
