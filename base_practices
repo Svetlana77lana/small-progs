@@ -1,0 +1,67 @@
+# -*- coding: utf-8 -*-
+import sys
+import yaml
+import numpy as np
+import bitstring
+from bitstring import *
+from time import strftime,sleep
+from datetime import datetime
+import matplotlib.pyplot as plt
+
+
+# короткая / сокращенная запись присвоения по условию
+A = Y if X else Z
+#-----------------------------------------------------------------------------------------#
+#---------                                                                       ---------#
+# ---                  Работа со строками                                            -----#  
+#---------                                                                           -----# 
+#-----------------------------------------------------------------------------------------#
+
+# Проверка введено ли что-то в поле e_analog (из виджета Entry библиотек tkinter)
+if e_analog.get() in '<string>':
+
+# And when looking for subsrings
+any(i in '<string>' for i in ('11','22','33'))
+
+
+#-----------------------------------------------------------------------------------------#
+#---------                                                                       ---------#
+# ---                  Использование цикла вместо повторения кода                    -----#  
+#---------                                                                           -----# 
+#-----------------------------------------------------------------------------------------#
+'''
+# было 
+    def check_akk_pkk(self):
+        for idx in range(1, MPD_AKK_NUM + 1):
+            akk_read = float(self.dict_akk_mpd_mV.get(idx).text().replace(',', '.'))
+            akk_set_val = round(akk_read / MPD_AKK_MZR_WEIGHT) * MPD_AKK_MZR_WEIGHT
+            self.dict_akk_mpd_mV.get(idx).setValue(akk_set_val)
+        for idx in range(1, MPD_PKK_NUM + 1):
+            pkk_read = float(self.dict_pkk_mpd_Om.get(idx).text().replace(',', '.'))
+            pkk_set_val = round(pkk_read / MPD_PKK_MZR_WEIGHT) * MPD_PKK_MZR_WEIGHT
+            self.dict_pkk_mpd_Om.get(idx).setValue(pkk_set_val)
+
+'''
+# стало
+    def check_akk_pkk(self):
+        for a, b, c in (
+                (MPD_AKK_NUM, self.dict_akk_mpd_mV, MPD_AKK_MZR_WEIGHT),
+                (MPD_PKK_NUM, self.dict_pkk_mpd_Om, MPD_PKK_MZR_WEIGHT),
+        ):
+            for idx in range(1, 1 + a):
+                someA = float(b.get(idx).text().replace(',', '.'))
+                someB = round(someA / c) * c
+                b.get(idx).setValue(someB)
+#-----------------------------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------------------------#
+#---------                                                                       ---------#
+# ---                  Аннотация типов в Python                                      -----#  
+#---------                                                                           -----# 
+#-----------------------------------------------------------------------------------------#
+
+
+def _validate( 
+    step: float, 
+    spinBox: QtWidgets.QDoubleSpinBox, 
+) -> None: 
