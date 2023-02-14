@@ -1,0 +1,17 @@
+"""
+Напишите декоратор, который добавляет к списку аргументов строку '— сказал он.'
+
+"""
+
+def scream(func):
+    def _wrapper(*args):
+        return func(*args, '— сказал он.',)
+    return _wrapper
+
+
+@scream
+def say(*args):
+    return ' '.join(args)
+
+print(say('Нет,', 'я', 'твой', 'отец'))
+# Нет, я твой отец — сказал он.
